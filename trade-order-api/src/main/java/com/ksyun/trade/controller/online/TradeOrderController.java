@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping(value = "/online/trade_order", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Slf4j
@@ -17,7 +19,7 @@ public class TradeOrderController {
     private TradeOrderService orderService;
 
     @RequestMapping("/{id}")
-    public RestResult query(@PathVariable("id") Integer id) {
+    public RestResult query(@PathVariable("id") Integer id) throws ClassNotFoundException, SQLException {
         return orderService.query(id);
     }
 
