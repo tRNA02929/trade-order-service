@@ -17,6 +17,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper class="com.ksyun.trade.mapper.UserMapper"/>
+        <mapper class="com.ksyun.trade.mapper.TradeOrderMapper"/>
+        <mapper class="com.ksyun.trade.mapper.TradeProductMapper"/>
     </mappers>
 </configuration>
