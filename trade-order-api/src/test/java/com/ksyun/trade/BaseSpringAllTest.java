@@ -1,6 +1,6 @@
 package com.ksyun.trade;
 
-import com.ksyun.trade.mapper.UserMapper;
+import com.ksyun.trade.mapper.TradeOrderMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,12 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.mysql.cj.jdbc.Driver;
 
 /**
  * 基础测试类.
@@ -49,9 +43,9 @@ public class BaseSpringAllTest {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        TradeOrderMapper tradeOrderMapper = sqlSession.getMapper(TradeOrderMapper.class);
 //        int id = userMapper.selectUserById(10);
-        System.out.println(userMapper.selectUserById(10));
+        System.out.println(tradeOrderMapper.selectUserById(10));
 
         System.out.println("ok");
     }
