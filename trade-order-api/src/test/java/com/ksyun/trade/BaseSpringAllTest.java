@@ -50,8 +50,8 @@ public class BaseSpringAllTest {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        int id = userMapper.selectUserById(10);
-        System.out.println(id);
+//        int id = userMapper.selectUserById(10);
+        System.out.println(userMapper.selectUserById(10));
 
         System.out.println("ok");
     }

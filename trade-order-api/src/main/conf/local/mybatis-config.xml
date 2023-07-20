@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--    <properties resource="jdbcConfig.properties"></properties>-->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -16,6 +17,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="BlogMapper.xml"/>
+        <mapper class="com.ksyun.trade.mapper.UserMapper"/>
     </mappers>
 </configuration>
