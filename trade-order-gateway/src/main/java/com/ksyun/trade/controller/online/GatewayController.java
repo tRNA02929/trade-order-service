@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 @RestController
 public class GatewayController {
     @Autowired
@@ -16,7 +19,7 @@ public class GatewayController {
      * 查询订单详情 (GET)
      */
     @RequestMapping(value = "/online/queryOrderInfo", produces = "application/json")
-    public Object queryOrderInfo(Integer id) {
+    public Object queryOrderInfo(Integer id) throws IOException {
         return gatewayService.loadLalancing(id);
     }
 
@@ -24,7 +27,7 @@ public class GatewayController {
      * 根据机房Id查询机房名称 (GET)
      */
     @RequestMapping(value = "/online/queryRegionName", produces = "application/json")
-    public Object queryRegionName(Integer regionId) {
+    public Object queryRegionName(Integer regionId) throws IOException {
         return gatewayService.loadLalancing(regionId);
     }
 
@@ -32,7 +35,7 @@ public class GatewayController {
      * 订单优惠券抵扣 (POST json)
      */
     @RequestMapping(value = "/online/deduct", produces = "application/json")
-    public Object deduct(@RequestBody VoucherDeductDTO param) {
+    public Object deduct(@RequestBody VoucherDeductDTO param) throws IOException {
         return gatewayService.loadLalancing(param);
     }
 
