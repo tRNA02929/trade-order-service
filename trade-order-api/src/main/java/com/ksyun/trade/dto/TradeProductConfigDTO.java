@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class TradeProductConfigDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String itemNo;
+    private String item_no;
 
-    private String itemName;
+    private String item_name;
 
     private String unit;
 
