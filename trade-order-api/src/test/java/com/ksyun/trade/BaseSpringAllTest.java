@@ -9,6 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.mysql.cj.jdbc.Driver;
 /**
  * 基础测试类.
  *
@@ -21,6 +26,19 @@ public class BaseSpringAllTest {
 
     long s = 0;
     long e = 0;
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ksyun?useUnicode=true&haracterEncodeing=UTF-8&useSSL=false&serverTimezone=GMT", "root", "lb123456");
+//        Connection con = DriverManager.getConnection("jdbc:mysql://campus-dev.mysql.ksyun.com:63265/test_trade?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT&allowMultiQueries=true", "test", "test123");
+        String sql = "select user_id from ksc_trade_order where id = 10";
+        ResultSet set = con.prepareStatement(sql).executeQuery();
+        while (set.next()) {
+            System.out.println(set.getString("user_id"));
+        }
+
+        System.out.println("ok");
+    }
 
     @Before
     public void before() {
