@@ -1,92 +1,62 @@
-# trade-order-service
+#  trade-order
 
 
 
-## Getting started
+## 说明
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+* 项目编码：UTF-8
+* JDK:1.8
+* IDE：不限
+* 项目开发方式  
+  - 分支开发，发布时合并主干
+  - 环境隔离（profile：local、dev、uat、prod）
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 模块
 
-## Add your files
+* biz：公共业务模块（供其它模块调用）<br/>
+* biz-base:基础业务 <br/>
+* biz-req-trace:请求链路跟踪<br/>
+* biz-glue:<br/>
+* trade-order-api：业务代码 <br/>
+* trade-order-gateway：路由服务 <br/>
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+
+###  代码提交规范
+
+#### 提交的原则
+
+* 保持较小的提交粒度，一次提交只做一件事情。提交的粒度可以是一个小功能点或者一个bugfix。更细粒度的提交便于追踪bug，撤回具体的改动比撤回一大块改动更容易。
+* 提交记录一定要明确，避免大量重复及语焉不详。
+* 无直接关联的文件不要在同一次提交。
+* 只有编译通过的代码才可以提交。
+* 每次提交代码，都要写Commit message（提交说明），认真对待提交备注，很有可能以后看备注的人是你自己。
+* git push无须过于频繁。不要每提交一次就推送一次，多积攒几个提交后再推送，这样可以避免在进行一次提交后发现代码中还有小错误。毕竟git push之后要再撤销公共分支的代码，还是要麻烦一些。
+* 功能需求仅一个人进行开发时，在功能完成之前不要着急创建远程分支。
+
+
+#### commit message前缀
 
 ```
-cd existing_repo
-git remote add origin http://120.92.88.48/libo14/trade-order-service.git
-git branch -M main
-git push -uf origin main
+提交规则：
+
+feature或feat:新功能
+add : 新增相关内容
+fix:修复bug
+docs:文档添加、修改，如README, CHANGELOG。
+style:格式（不影响代码运行的变动,如格式化，缩进等）
+refactor:重构（即不是新增功能，也不是修改bug的代码变动）
+test:增加测试
+chore:构建过程或辅助工具的变动(如package.sh)
+deps:依赖变更（比如guava版本变更)
+revert:撤销以前的commit(必须写清楚)
+log:增加、调整log输出等
+perf:性能优化
+config:配置文件修改（如第三方接口url调整）
+remove:移除
+experience:体验优化
+ui:纯粹CSS样式变动，不影响功能代码
+other:其他原因，如上述不能覆盖，才用。如：合并代码，解决代码冲突等
+
+eg：
+refactor：优化调用链
 ```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](http://120.92.88.48/libo14/trade-order-service/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
