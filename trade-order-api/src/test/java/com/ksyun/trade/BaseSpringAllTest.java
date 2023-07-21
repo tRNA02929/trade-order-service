@@ -1,6 +1,8 @@
 package com.ksyun.trade;
 
-import com.ksyun.trade.mapper.TradeOrderMapper;
+import com.ksyun.trade.dto.TradeOrderConfigDTO;
+import com.ksyun.trade.dto.TradeProductConfigDTO;
+import com.ksyun.trade.mapper.TradeMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -43,10 +45,33 @@ public class BaseSpringAllTest {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        TradeOrderMapper tradeOrderMapper = sqlSession.getMapper(TradeOrderMapper.class);
-//        int id = userMapper.selectUserById(10);
-        System.out.println(tradeOrderMapper.selectUserById(10));
+        TradeMapper tradeMapper = sqlSession.getMapper(TradeMapper.class);
+        TradeOrderConfigDTO toct = null;
+        TradeProductConfigDTO[] tpct = null;
+        long i1 = System.currentTimeMillis();
+        toct = tradeMapper.selectUserById(10);
+        tpct = tradeMapper.selectProductById(10);
+        long i2 = System.currentTimeMillis();
 
+        System.out.println(i2 - i1);
+        System.out.println(toct.getUser_id()+"\t"+tpct[0].getItem_name());
+
+        i1 = System.currentTimeMillis();
+        toct = tradeMapper.selectUserById(11);
+        tpct = tradeMapper.selectProductById(11);
+        i2 = System.currentTimeMillis();
+        System.out.println(i2 - i1);
+        System.out.println(toct.getUser_id()+"\t"+tpct[0].getItem_name());
+
+        i1 = System.currentTimeMillis();
+        toct = tradeMapper.selectUserById(12);
+        tpct = tradeMapper.selectProductById(12);
+        i2 = System.currentTimeMillis();
+        System.out.println(i2 - i1);
+        System.out.println(toct.getUser_id()+"\t"+tpct[0].getItem_name());
+
+
+        sqlSession.commit();
         System.out.println("ok");
     }
 
