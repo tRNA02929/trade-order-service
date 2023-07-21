@@ -2,8 +2,7 @@ package com.ksyun.trade.service;
 
 import com.ksyun.trade.dto.TradeOrderConfigDTO;
 import com.ksyun.trade.dto.TradeProductConfigDTO;
-import com.ksyun.trade.mapper.TradeOrderMapper;
-import com.ksyun.trade.mapper.TradeProductMapper;
+import com.ksyun.trade.mapper.TradeMapper;
 import com.ksyun.trade.rest.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
@@ -34,12 +33,11 @@ public class TradeOrderService {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        TradeOrderMapper tradeOrderMapper = sqlSession.getMapper(TradeOrderMapper.class);
-        TradeOrderConfigDTO tocd = tradeOrderMapper.selectUserById(id);
+        TradeMapper tradeMapper = sqlSession.getMapper(TradeMapper.class);
+        TradeOrderConfigDTO tocd = tradeMapper.selectUserById(id);
         int userId = tocd.getUser_id();
 
-        TradeProductMapper tradeProductMapper = sqlSession.getMapper(TradeProductMapper.class);
-        TradeProductConfigDTO[] tpcd = tradeProductMapper.selectProductById(id);
+        TradeProductConfigDTO[] tpcd = tradeMapper.selectProductById(id);
 
         RestResult<HashMap<String, Object>> restResult = restTemplate.getForObject(
                 "http://campus.meta.ksyun.com:8090/online/user/{id}", RestResult.class, userId);
