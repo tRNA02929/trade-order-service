@@ -1,6 +1,7 @@
 package com.ksyun.trade.service;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.ksyun.trade.dto.TradeOrderDTO;
 import com.ksyun.trade.dto.TradeProductConfigDTO;
 import com.ksyun.trade.rest.RestResult;
@@ -8,11 +9,13 @@ import com.ksyun.trade.util.TradeSelectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -23,6 +26,21 @@ public class TradeOrderService {
     @Autowired
     private HttpServletRequest request;
 
+    private static HashMap<Integer,HashMap<String,Object>> regionMap = null;
+
+    private void initialRegion(){
+        RestTemplate restTemplate = new RestTemplate();
+        RestResult<ArrayList<HashMap<String, Object>>> redionResult = restTemplate.getForObject(
+                "http://campus.meta.ksyun.com:8090/online/region/list", RestResult.class);
+        regionMap = new HashMap<>();
+
+        for (HashMap<String, Object> region : redionResult.getData()) {
+            Integer t = (Integer) region.get("id");
+            region.remove("id");
+            region.remove("status");
+            regionMap.put(t, region);
+        }
+    }
 
     public RestResult query(Integer id) {
         //TODO
@@ -34,30 +52,23 @@ public class TradeOrderService {
         RestTemplate restTemplate = new RestTemplate();
         RestResult<HashMap<String, Object>> userResult = restTemplate.getForObject(
                 "http://campus.meta.ksyun.com:8090/online/user/{id}", RestResult.class, userId);
-        RestResult<ArrayList<HashMap<String, Object>>> redionResult = restTemplate.getForObject(
-                "http://campus.meta.ksyun.com:8090/online/region/list", RestResult.class);
+        if (regionMap == null) {
+            initialRegion();
+        }
 
-
-        HashMap<String, Object> map = userResult.getData();
+        Map<String, Object> map = userResult.getData();
         map.remove("id");
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", id);
         data.put("priceValue", tocd.getPrice_value());
         data.put("user", map);
-
-        for (HashMap<String, Object> region : redionResult.getData()) {
-            if (regionId == (int) region.get("id")) {
-                map = new HashMap<>();
-                map.put("code", region.get("code"));
-                map.put("name", region.get("name"));
-                data.put("region", map);
-                break;
-            }
-        }
+        data.put("region", regionMap.get(regionId));
 
         data.put("configs", tpcd);
 
         RestResult restResult = new RestResult();
+        restResult.setCode(200);
+        restResult.setMsg("ok");
         restResult.setData(data);
         return restResult;
     }
