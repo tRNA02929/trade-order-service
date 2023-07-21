@@ -1,12 +1,11 @@
 package com.ksyun.trade.dto;
 
 import lombok.Data;
-import org.apache.ibatis.annotations.Select;
 
 import java.io.Serializable;
 
 @Data
-public class TradeOrderConfigDTO implements Serializable {
+public class TradeOrderDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int user_id;
