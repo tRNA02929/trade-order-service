@@ -68,7 +68,7 @@ public class WebLogAdvice {
             Object obj = pjp.proceed();
             if (obj instanceof RestResult) {
                 RestResult dto = ((RestResult) obj);
-                dto.setRequestId(TraceUtils.getTraceId());
+//                dto.setRequestId(TraceUtils.getTraceId());
                 dto.setDescr(StringUtils.defaultString(new BetweenFormater(System.currentTimeMillis() - start).simpleFormat(), dto.getDescr()));
             }
             return obj;
