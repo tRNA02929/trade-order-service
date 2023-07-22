@@ -10,6 +10,6 @@ public class VoucherDeductDTO {
     private Integer orderId;
     private String voucherNo;
     private BigDecimal amount;
-    private BigDecimal beforeDeductAmount;
-    private BigDecimal afterDeductAmount;
+//    private BigDecimal beforeDeductAmount;
+//    private BigDecimal afterDeductAmount;
 }
