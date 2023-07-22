@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Controller层日志打印.
@@ -69,6 +70,7 @@ public class WebLogAdvice {
             if (obj instanceof RestResult) {
                 RestResult dto = ((RestResult) obj);
 //                dto.setRequestId(TraceUtils.getTraceId());
+                dto.setRequestId(headers.getOrDefault("X-KSY-REQUEST-ID", UUID.randomUUID().toString()));
                 dto.setDescr(StringUtils.defaultString(new BetweenFormater(System.currentTimeMillis() - start).simpleFormat(), dto.getDescr()));
             }
             return obj;
