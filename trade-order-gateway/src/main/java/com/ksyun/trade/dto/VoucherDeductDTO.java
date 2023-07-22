@@ -12,4 +12,11 @@ public class VoucherDeductDTO {
     private BigDecimal amount;
 //    private BigDecimal beforeDeductAmount;
 //    private BigDecimal afterDeductAmount;
+
+    @Override
+    public String toString() {
+        return "orderId=" + orderId + "&" +
+                "voucherNo=" + voucherNo + '&' +
+                "amount=" + amount;
+    }
 }
