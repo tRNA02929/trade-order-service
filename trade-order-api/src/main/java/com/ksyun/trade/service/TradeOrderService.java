@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.ksyun.trade.dto.TradeOrderDTO;
 import com.ksyun.trade.dto.TradeProductConfigDTO;
+import com.ksyun.trade.dto.VoucherDeductDTO;
 import com.ksyun.trade.rest.RestResult;
 import com.ksyun.trade.util.TradeSelectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,12 @@ import java.util.stream.Stream;
 @Slf4j
 public class TradeOrderService {
 
-
     @Autowired
     private HttpServletRequest request;
 
-    private static HashMap<Integer,HashMap<String,Object>> regionMap = null;
+    private static HashMap<Integer, HashMap<String, Object>> regionMap = null;
 
-    private void initialRegion(){
+    private void initialRegion() {
         RestTemplate restTemplate = new RestTemplate();
         RestResult<ArrayList<HashMap<String, Object>>> redionResult = restTemplate.getForObject(
                 "http://campus.meta.ksyun.com:8090/online/region/list", RestResult.class);
@@ -42,7 +42,7 @@ public class TradeOrderService {
         }
     }
 
-    public RestResult query(Integer id) {
+    public RestResult queryOrderInfo(Integer id) {
         //TODO
         TradeOrderDTO tocd = TradeSelectUtil.selectOrderById(id);
         TradeProductConfigDTO[] tpcd = TradeSelectUtil.selectProductById(id);
@@ -70,6 +70,25 @@ public class TradeOrderService {
         restResult.setCode(200);
         restResult.setMsg("ok");
         restResult.setData(data);
+        return restResult;
+    }
+
+    public RestResult queryRegionName(Integer id) {
+        if (regionMap == null) {
+            initialRegion();
+        }
+        RestResult<Object> restResult = new RestResult<>();
+        restResult.setCode(200);
+        restResult.setMsg("ok");
+        restResult.setData(regionMap.get(id).get("name"));
+        return restResult;
+    }
+
+    public RestResult deduct(VoucherDeductDTO param) {
+        //TODO
+        RestResult<Object> restResult = new RestResult<>();
+        restResult.setCode(200);
+        restResult.setMsg("ok");
         return restResult;
     }
 }
