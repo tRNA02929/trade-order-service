@@ -1,11 +1,11 @@
-package com.ksyun.trade.dto;
+package com.ksyun.trade.entity;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class TradeProductConfigDTO implements Serializable {
+public class TradeProductConfigEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String item_no;
