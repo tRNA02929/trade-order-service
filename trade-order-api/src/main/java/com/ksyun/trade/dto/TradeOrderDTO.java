@@ -3,6 +3,7 @@ package com.ksyun.trade.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class TradeOrderDTO implements Serializable {
@@ -12,5 +13,5 @@ public class TradeOrderDTO implements Serializable {
 
     private int region_id;
 
-    private double price_value;
+    private BigDecimal price_value;
 }
