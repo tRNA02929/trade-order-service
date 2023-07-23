@@ -1,5 +1,7 @@
 package com.ksyun.trade.dto;
 
+import com.ksyun.trade.entity.TradeOrderEntity;
+import com.ksyun.trade.entity.TradeProductConfigEntity;
 import com.ksyun.trade.mapper.TradeMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -23,11 +25,11 @@ public final class TradeSelectDTO {
         }
     }
 
-    public static TradeOrderDTO selectOrderById(int id) {
+    public static TradeOrderEntity selectOrderById(int id) {
         return tradeMapper.selectOrderById(id);
     }
 
-    public static TradeProductConfigDTO[] selectProductById(int id) {
+    public static TradeProductConfigEntity[] selectProductById(int id) {
         return tradeMapper.selectProductById(id);
     }
 }
