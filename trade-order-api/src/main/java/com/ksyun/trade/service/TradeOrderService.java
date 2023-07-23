@@ -1,23 +1,18 @@
 package com.ksyun.trade.service;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.ksyun.trade.dto.TradeOrderDTO;
-import com.ksyun.trade.dto.TradeProductConfigDTO;
-import com.ksyun.trade.dto.VoucherDeductDTO;
+import com.ksyun.trade.dto.*;
 import com.ksyun.trade.rest.RestResult;
-import com.ksyun.trade.util.TradeSelectUtil;
+import com.ksyun.trade.utils.UserCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -42,28 +37,34 @@ public class TradeOrderService {
         }
     }
 
+    private void putUserCache(int userId) {
+        RestTemplate restTemplate = new RestTemplate();
+        RestResult<Map<String, String>> userResult = restTemplate.getForObject(
+                "http://campus.meta.ksyun.com:8090/online/user/{id}", RestResult.class, userId);
+        Map<String, String> map = userResult.getData();
+        map.remove("id");
+        UserCacheUtil.putUserInfo(userId, userResult.getData());
+    }
+
     public RestResult queryOrderInfo(Integer id) {
         //TODO
-        TradeOrderDTO tocd = TradeSelectUtil.selectOrderById(id);
-        TradeProductConfigDTO[] tpcd = TradeSelectUtil.selectProductById(id);
+        TradeOrderDTO tocd = TradeSelectDTO.selectOrderById(id);
+        TradeProductConfigDTO[] tpcd = TradeSelectDTO.selectProductById(id);
         int userId = tocd.getUser_id();
         int regionId = tocd.getRegion_id();
 
-        RestTemplate restTemplate = new RestTemplate();
-        RestResult<HashMap<String, Object>> userResult = restTemplate.getForObject(
-                "http://campus.meta.ksyun.com:8090/online/user/{id}", RestResult.class, userId);
+        if (UserCacheUtil.getUserInfo(userId) == null) {
+            putUserCache(userId);
+        }
         if (regionMap == null) {
             initialRegion();
         }
 
-        Map<String, Object> map = userResult.getData();
-        map.remove("id");
-        HashMap<String, Object> data = new HashMap<>();
+        LinkedHashMap<String, Object> data = new LinkedHashMap<>();
         data.put("id", id);
         data.put("priceValue", tocd.getPrice_value());
-        data.put("user", map);
+        data.put("user", UserCacheUtil.getUserInfo(userId));
         data.put("region", regionMap.get(regionId));
-
         data.put("configs", tpcd);
 
         RestResult restResult = new RestResult();
