@@ -4,11 +4,9 @@ import com.ksyun.trade.dto.VoucherDeductDTO;
 import com.ksyun.trade.service.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
 import java.io.IOException;
 
 @RestController
@@ -36,7 +34,7 @@ public class GatewayController {
     /**
      * 订单优惠券抵扣 (POST json)
      */
-    @RequestMapping(value = "/deduct", produces = "application/json")
+    @RequestMapping(value = "/voucher/deduct", produces = "application/json")
     public Object deduct(VoucherDeductDTO param) throws IOException {
         return gatewayService.deduct(param);
     }
