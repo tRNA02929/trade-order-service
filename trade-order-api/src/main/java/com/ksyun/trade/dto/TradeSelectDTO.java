@@ -1,23 +1,15 @@
-package com.ksyun.trade.util;
+package com.ksyun.trade.dto;
 
-import com.google.common.collect.Table;
-import com.ksyun.trade.dto.TradeOrderDTO;
-import com.ksyun.trade.dto.TradeProductConfigDTO;
 import com.ksyun.trade.mapper.TradeMapper;
-import com.ksyun.trade.rest.RestResult;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public final class TradeSelectUtil {
+public final class TradeSelectDTO {
     private static TradeMapper tradeMapper;
 
     static {
