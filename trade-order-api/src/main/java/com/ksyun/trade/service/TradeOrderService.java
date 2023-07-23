@@ -1,6 +1,9 @@
 package com.ksyun.trade.service;
 
 import com.ksyun.trade.dto.*;
+import com.ksyun.trade.entity.TradeOrderEntity;
+import com.ksyun.trade.entity.TradeProductConfigEntity;
+import com.ksyun.trade.dto.VoucherDeductDTO;
 import com.ksyun.trade.rest.RestResult;
 import com.ksyun.trade.utils.UserCacheUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -48,8 +48,8 @@ public class TradeOrderService {
 
     public RestResult queryOrderInfo(Integer id) {
         //TODO
-        TradeOrderDTO tocd = TradeSelectDTO.selectOrderById(id);
-        TradeProductConfigDTO[] tpcd = TradeSelectDTO.selectProductById(id);
+        TradeOrderEntity tocd = TradeSelectDTO.selectOrderById(id);
+        TradeProductConfigEntity[] tpcd = TradeSelectDTO.selectProductById(id);
         int userId = tocd.getUser_id();
         int regionId = tocd.getRegion_id();
 
@@ -90,6 +90,10 @@ public class TradeOrderService {
         RestResult<Object> restResult = new RestResult<>();
         restResult.setCode(200);
         restResult.setMsg("ok");
+
+        VoucherUpdateDTO.insertVoucher(param);
+
+        restResult.setData(param);
         return restResult;
     }
 }
