@@ -19,8 +19,8 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="mapper.xml"/>
-<!--        <mapper class="com.ksyun.trade.mapper.TradeMapper"/>-->
+        <mapper resource="mapper-select.xml"/>
+        <mapper resource="mapper-insert.xml"/>
 <!--        <mapper class="com.ksyun.trade.mapper.TradeProductMapper"/>-->
     </mappers>
 </configuration>
