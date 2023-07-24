@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Service
 public class GatewayService {
+
+    @Autowired
+    private HttpServletRequest request;
+
     @Autowired
     private HttpServletResponse response;
 
@@ -40,27 +45,33 @@ public class GatewayService {
     }
 
     public Object queryOrderInfo(Object param) throws IOException {
-        response.sendRedirect(round() + "/online/trade_order/" + param);
+        String action = round();
+        response.sendRedirect(action + "/online/trade_order/" + param +
+                "?REFERER=" + action +
+                "&REQUEST_ID=" + request.getHeader("X-KSY-REQUEST-ID"));
         return null;
     }
 
     public Object queryRegionName(Object param) throws IOException {
-        response.sendRedirect(round() + "/online/trade_order/region/" + param);
+        String action = round();
+        response.sendRedirect(action + "/online/trade_order/region/" + param +
+                "?REQUEST_ID=" + request.getHeader("X-KSY-REQUEST-ID"));
         return null;
     }
 
     public Object deduct(VoucherDeductDTO param) throws IOException {
-        response.sendRedirect(round() + "/online/trade_order/deduct?" + param);
+        response.sendRedirect(round() + "/online/trade_order/deduct?" + param
+                + "&REQUEST_ID=" + request.getHeader("X-KSY-REQUEST-ID"));
         return null;
     }
 
     public Object listUpstreamInfo() {
         RestResult result = new RestResult<>();
-        if (StringRedisUpstream.listUpstreamInfo(stringRedisTemplate)){
+        if (StringRedisUpstream.listUpstreamInfo(stringRedisTemplate)) {
             result.setCode(200);
             result.setMsg("ok");
             result.setData(actions);
-        }else {
+        } else {
             result.setCode(429);
             result.setMsg("对不起, 系统压力过大, 请稍后再试!");
         }
