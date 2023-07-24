@@ -1,4 +1,4 @@
-USE `test_trade`;
+USE `ksyun`;
 
 CREATE TABLE `ksc_voucher_deduct` (
       `id` INT(11) NOT NULL AUTO_INCREMENT,
