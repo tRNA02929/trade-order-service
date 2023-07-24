@@ -8,7 +8,8 @@ import java.util.Objects;
 
 public class StringRedisUpstream {
 
-    public static String lua = "" +
+    // 限流脚本
+    private static final String lua = "" +
             "local waterKey = KEYS[1]\n" +
             "local lastTimeKey = KEYS[2]\n" +
             "local water = tonumber(redis.call('get', waterKey) or 0)\n" +
@@ -29,10 +30,15 @@ public class StringRedisUpstream {
             "    return 1\n" +
             "end";
 
-    public static boolean listUpstreamInfo(StringRedisTemplate stringRedisTemplate) {
-        ArrayList<String> keys = new ArrayList<>();
+    private static final ArrayList<String> keys;
+
+    static {
+        keys = new ArrayList<>();
         keys.add("libo14:listUpstreamInfo:water");
         keys.add("libo14:listUpstreamInfo:lastTime");
+    }
+
+    public static boolean listUpstreamInfo(StringRedisTemplate stringRedisTemplate) {
         Object o = stringRedisTemplate.execute(
                 RedisScript.of(lua, Object.class),
                 keys, "5", Long.toString(System.currentTimeMillis()));
