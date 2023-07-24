@@ -25,6 +25,7 @@ public class GatewayService {
     private boolean round = false;
 
     public String round() {
+        // 1. 模拟路由 (负载均衡) 获取接口
         String action;
         if (round) {
             round = false;
@@ -33,20 +34,17 @@ public class GatewayService {
             round = true;
             action = actions[1];
         }
-        action = "http://localhost:8089";
+        // 本地测试
+//        action = "http://localhost:8089";
         return action;
     }
 
     public Object queryOrderInfo(Object param) throws IOException {
-        // 1. 模拟路由 (负载均衡) 获取接口
-        // 2. 请求转发
         response.sendRedirect(round() + "/online/trade_order/" + param);
         return null;
     }
 
     public Object queryRegionName(Object param) throws IOException {
-        // 1. 模拟路由 (负载均衡) 获取接口
-        // 2. 请求转发
         response.sendRedirect(round() + "/online/trade_order/region/" + param);
         return null;
     }
