@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Data
 public class VoucherDeductDTO implements Serializable {
@@ -16,10 +17,12 @@ public class VoucherDeductDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "orderId=" + orderId + "&" +
+        String result = "orderId=" + orderId + "&" +
                 "voucherNo=" + voucherNo + '&' +
-                "amount=" + amount + '&' +
-                "beforeDeductAmount=" + beforeDeductAmount + '&' +
-                "afterDeductAmount=" + afterDeductAmount;
+                "amount=" + amount;
+        if (Objects.nonNull(beforeDeductAmount) && Objects.nonNull(afterDeductAmount))
+            result += '&' + "beforeDeductAmount=" + beforeDeductAmount + '&' +
+                    "afterDeductAmount=" + afterDeductAmount;
+        return result;
     }
 }
