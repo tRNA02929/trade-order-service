@@ -12,7 +12,7 @@
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url"
-                          value="jdbc:mysql://campus-dev.mysql.ksyun.com:63265/test_trade?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false"/>
+                          value="jdbc:mysql://campus-test.mysql.ksyun.com:8306/test_trade?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false"/>
                 <property name="username" value="test"/>
                 <property name="password" value="test123"/>
             </dataSource>

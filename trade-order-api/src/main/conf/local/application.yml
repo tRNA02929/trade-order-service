@@ -8,6 +8,8 @@ server:
     accept-count: 10 # 挂起的请求队列最大连接数，默认100
     connection-timeout: 60s  # server端的socket超时间，默认60s
 
+actions: http://campus.query1.ksyun.com:8089,http://campus.query2.ksyun.com:8089
+
 info:
   app:
     name: trade-order-api
@@ -26,9 +28,7 @@ spring:
     host: campus-dev.redis.ksyun.com
     port: 26356
     password: TkSbRi%xQtFkEX98BQR3yQ==
-    db: 3
+    database: 3
 
 meta:
   url: http://campus.meta.ksyun.com:8090
-
-
