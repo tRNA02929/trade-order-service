@@ -61,6 +61,8 @@ public class TradeOrderService {
         }
 
         LinkedHashMap<String, Object> data = new LinkedHashMap<>();
+        String upstream = request.getHeader("REFERER").split("online")[0];
+        data.put("upstream", upstream);
         data.put("id", id);
         data.put("priceValue", tocd.getPrice_value());
         data.put("user", UserCacheUtil.getUserInfo(userId));
