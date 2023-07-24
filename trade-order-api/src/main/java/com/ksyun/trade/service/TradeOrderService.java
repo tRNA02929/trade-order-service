@@ -1,9 +1,10 @@
 package com.ksyun.trade.service;
 
-import com.ksyun.trade.dto.*;
+import com.ksyun.trade.dto.TradeSelectDTO;
+import com.ksyun.trade.dto.VoucherDeductDTO;
+import com.ksyun.trade.dto.VoucherUpdateDTO;
 import com.ksyun.trade.entity.TradeOrderEntity;
 import com.ksyun.trade.entity.TradeProductConfigEntity;
-import com.ksyun.trade.dto.VoucherDeductDTO;
 import com.ksyun.trade.rest.RestResult;
 import com.ksyun.trade.utils.UserCacheUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -20,9 +24,9 @@ public class TradeOrderService {
 
     @Autowired
     private HttpServletRequest request;
-
     private static HashMap<Integer, HashMap<String, Object>> regionMap = null;
 
+    // 初始化一次性获取所有地区信息
     private void initialRegion() {
         RestTemplate restTemplate = new RestTemplate();
         RestResult<ArrayList<HashMap<String, Object>>> redionResult = restTemplate.getForObject(
@@ -37,6 +41,7 @@ public class TradeOrderService {
         }
     }
 
+    // 获取用户信息并缓存
     private void putUserCache(int userId) {
         RestTemplate restTemplate = new RestTemplate();
         RestResult<Map<String, String>> userResult = restTemplate.getForObject(
@@ -46,8 +51,8 @@ public class TradeOrderService {
         UserCacheUtil.putUserInfo(userId, userResult.getData());
     }
 
+    // 获取订单信息
     public RestResult queryOrderInfo(Integer id) {
-        //TODO
         TradeOrderEntity tocd = TradeSelectDTO.selectOrderById(id);
         TradeProductConfigEntity[] tpcd = TradeSelectDTO.selectProductById(id);
         int userId = tocd.getUser_id();
@@ -59,7 +64,6 @@ public class TradeOrderService {
         if (regionMap == null) {
             initialRegion();
         }
-
         LinkedHashMap<String, Object> data = new LinkedHashMap<>();
         String upstream = request.getHeader("REFERER").split("online")[0];
         data.put("upstream", upstream);
@@ -76,6 +80,7 @@ public class TradeOrderService {
         return restResult;
     }
 
+    // 获取地区名称
     public RestResult queryRegionName(Integer id) {
         if (regionMap == null) {
             initialRegion();
@@ -87,8 +92,8 @@ public class TradeOrderService {
         return restResult;
     }
 
+    // 扣减代金券
     public RestResult deduct(VoucherDeductDTO param) {
-        //TODO
         RestResult<Object> restResult = new RestResult<>();
         restResult.setCode(200);
         restResult.setMsg("ok");

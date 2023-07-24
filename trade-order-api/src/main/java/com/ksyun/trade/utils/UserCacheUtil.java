@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+// 用于缓存用户信息
 public class UserCacheUtil {
     private static LoadingCache<Integer, UserInfoEntity> userCache;
 
