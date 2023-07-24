@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -52,7 +49,7 @@ public class TradeOrderService {
     }
 
     // 获取订单信息
-    public RestResult queryOrderInfo(Integer id) {
+    public RestResult queryOrderInfo(Integer id, String REFERER, String REQUEST_ID) {
         TradeOrderEntity tocd = TradeSelectDTO.selectOrderById(id);
         TradeProductConfigEntity[] tpcd = TradeSelectDTO.selectProductById(id);
         int userId = tocd.getUser_id();
@@ -65,8 +62,9 @@ public class TradeOrderService {
             initialRegion();
         }
         LinkedHashMap<String, Object> data = new LinkedHashMap<>();
-        String upstream = request.getHeader("REFERER").split("online")[0];
-        data.put("upstream", upstream);
+        String upstream = request.getHeader("REFERER");
+        upstream = Objects.toString(upstream, "").split("online")[0];
+        data.put("upstream", REFERER);
         data.put("id", id);
         data.put("priceValue", tocd.getPrice_value());
         data.put("user", UserCacheUtil.getUserInfo(userId));
@@ -76,12 +74,16 @@ public class TradeOrderService {
         RestResult restResult = new RestResult();
         restResult.setCode(200);
         restResult.setMsg("ok");
+        if (!(REQUEST_ID == null || REQUEST_ID.equals("") || REQUEST_ID.equals("null"))) {
+            restResult.setRequestId(REQUEST_ID);
+        }
         restResult.setData(data);
+        log.info("X-KSY-REQUEST-ID:{}", REQUEST_ID);
         return restResult;
     }
 
     // 获取地区名称
-    public RestResult queryRegionName(Integer id) {
+    public RestResult queryRegionName(Integer id, String REQUEST_ID) {
         if (regionMap == null) {
             initialRegion();
         }
@@ -89,18 +91,28 @@ public class TradeOrderService {
         restResult.setCode(200);
         restResult.setMsg("ok");
         restResult.setData(regionMap.get(id).get("name"));
+
+        if (!(REQUEST_ID == null || REQUEST_ID.equals("") || REQUEST_ID.equals("null"))) {
+            restResult.setRequestId(REQUEST_ID);
+        }
+        log.info("X-KSY-REQUEST-ID:{}", REQUEST_ID);
         return restResult;
     }
 
     // 扣减代金券
-    public RestResult deduct(VoucherDeductDTO param) {
+    public RestResult deduct(VoucherDeductDTO param, String REQUEST_ID) {
         RestResult<Object> restResult = new RestResult<>();
         restResult.setCode(200);
         restResult.setMsg("ok");
 
         VoucherUpdateDTO.insertVoucher(param);
 
-        restResult.setData(param);
+//        restResult.setData(param);
+
+        if (!(REQUEST_ID == null || REQUEST_ID.equals("") || REQUEST_ID.equals("null"))) {
+            restResult.setRequestId(REQUEST_ID);
+        }
+        log.info("X-KSY-REQUEST-ID:{}", REQUEST_ID);
         return restResult;
     }
 }

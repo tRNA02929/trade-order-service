@@ -70,7 +70,8 @@ public class WebLogAdvice {
             if (obj instanceof RestResult) {
                 RestResult dto = ((RestResult) obj);
 //                dto.setRequestId(TraceUtils.getTraceId());
-                dto.setRequestId(headers.getOrDefault("X-KSY-REQUEST-ID", UUID.randomUUID().toString()));
+                if (dto.getRequestId() == null)
+                    dto.setRequestId(headers.getOrDefault("X-KSY-REQUEST-ID", UUID.randomUUID().toString()));
                 dto.setDescr(StringUtils.defaultString(new BetweenFormater(System.currentTimeMillis() - start).simpleFormat(), dto.getDescr()));
             }
             return obj;

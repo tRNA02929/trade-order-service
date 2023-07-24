@@ -18,17 +18,17 @@ public class TradeOrderController {
     private TradeOrderService orderService;
 
     @RequestMapping("/{id}")
-    public RestResult queryOrderInfo(@PathVariable("id") Integer id) {
-        return orderService.queryOrderInfo(id);
+    public RestResult queryOrderInfo(@PathVariable("id") Integer id, String REFERER, String REQUEST_ID) {
+        return orderService.queryOrderInfo(id, REFERER, REQUEST_ID);
     }
 
     @RequestMapping("/region/{id}")
-    public RestResult queryRegionName(@PathVariable("id") Integer id) {
-        return orderService.queryRegionName(id);
+    public RestResult queryRegionName(@PathVariable("id") Integer id, String REQUEST_ID) {
+        return orderService.queryRegionName(id, REQUEST_ID);
     }
 
     @RequestMapping("/deduct")
-    public RestResult deduct(VoucherDeductDTO param) {
-        return orderService.deduct(param);
+    public RestResult deduct(VoucherDeductDTO param, String REQUEST_ID) {
+        return orderService.deduct(param, REQUEST_ID);
     }
 }
