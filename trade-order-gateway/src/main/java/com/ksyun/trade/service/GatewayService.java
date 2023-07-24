@@ -1,13 +1,13 @@
 package com.ksyun.trade.service;
 
+import com.ksyun.trade.dto.StringRedisUpstream;
 import com.ksyun.trade.dto.VoucherDeductDTO;
+import com.ksyun.trade.rest.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.HttpRequestHandler;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -15,6 +15,9 @@ import java.io.IOException;
 public class GatewayService {
     @Autowired
     private HttpServletResponse response;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Value("${actions}")
     private String[] actions;
@@ -53,12 +56,17 @@ public class GatewayService {
         return null;
     }
 
-    public Object loadLalancing(Object param) throws IOException {
-        // 1. 模拟路由 (负载均衡) 获取接口
-        // 2. 请求转发
-        response.sendRedirect("http://localhost:8089/online/trade_order/" + param);
-        return null;
+    public Object listUpstreamInfo() {
+        RestResult result = new RestResult<>();
+        if (StringRedisUpstream.listUpstreamInfo(stringRedisTemplate)){
+            result.setCode(200);
+            result.setMsg("ok");
+            result.setData(actions);
+        }else {
+            result.setCode(429);
+            result.setMsg("对不起, 系统压力过大, 请稍后再试!");
+        }
+        return result;
     }
-
 
 }

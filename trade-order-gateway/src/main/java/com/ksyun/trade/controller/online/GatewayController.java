@@ -44,7 +44,7 @@ public class GatewayController {
      */
     @RequestMapping(value = "/listUpstreamInfo", produces = "application/json")
     public Object listUpstreamInfo() {
-        return null;
+        return gatewayService.listUpstreamInfo();
     }
 
 }
