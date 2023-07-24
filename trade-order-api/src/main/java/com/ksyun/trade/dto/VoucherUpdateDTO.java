@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 public final class VoucherUpdateDTO {
     private static VoucherMapper voucherMapper;
@@ -33,14 +34,19 @@ public final class VoucherUpdateDTO {
     public static void insertVoucher(VoucherDeductDTO voucherDeductDTO) {
         int orderId = voucherDeductDTO.getOrderId();
         VoucherDeductDTO voucher = selectVoucherByOrderId(orderId);
+        BigDecimal before, after;
         if (voucher == null) {
             TradeOrderEntity tocd = TradeSelectDTO.selectOrderById(orderId);
-            voucherDeductDTO.setBeforeDeductAmount(tocd.getPrice_value());
-            voucherDeductDTO.setAfterDeductAmount(tocd.getPrice_value().subtract(voucherDeductDTO.getAmount()));
+            before = tocd.getPrice_value();
         } else {
-            voucherDeductDTO.setBeforeDeductAmount(voucher.getAfterDeductAmount());
-            voucherDeductDTO.setAfterDeductAmount(voucher.getAfterDeductAmount().subtract(voucherDeductDTO.getAmount()));
+            before = voucher.getAfterDeductAmount();
         }
+        voucherDeductDTO.setBeforeDeductAmount(before);
+        after = before.subtract(voucherDeductDTO.getAmount());
+        if (after.compareTo(BigDecimal.ZERO) < 0) {
+            after = BigDecimal.ZERO;
+        }
+        voucherDeductDTO.setAfterDeductAmount(after);
         voucherMapper.insertVoucher(voucherDeductDTO);
         sqlSession.commit();
     }
